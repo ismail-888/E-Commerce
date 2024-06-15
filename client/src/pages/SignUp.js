@@ -17,7 +17,7 @@ const SignUp = () => {
     profilePic: "",
   });
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +33,12 @@ const SignUp = () => {
     const file = e.target.files[0];
 
     const imagePic = await imageTobase64(file);
-    setData((prev) => {
+
+    setData((preve) => {
       return {
-        ...prev,
+        ...preve,
         profilePic: imagePic,
+       
       };
     });
   };
@@ -54,14 +56,14 @@ const SignUp = () => {
       const dataApi = await dataResponse.json();
       if (dataApi.success) {
         toast.success(dataApi.message);
-        navigate("/login")
+        navigate("/login");
       }
 
       if (dataApi.error) {
         toast.error(dataApi.message);
       }
     } else {
-      console.log("Confirm Password should be the same as Password ");
+      toast.error("Confirm Password should be the same as Password ");
     }
   };
 
