@@ -22,7 +22,7 @@ const AdminPanel = () => {
                 <img
                   src={user?.profilePic}
                   alt={user?.name}
-                  className="w-20 h-20 rounded-full object-cover"
+                  className="w-20 h-20 rounded-full object-cover mt-3"
                 />
               ) : (
                 <FaRegCircleUser />

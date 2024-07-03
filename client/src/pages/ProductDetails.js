@@ -50,12 +50,12 @@ const ProductDetails = () => {
     setActiveImage(dataReponse?.data?.productImage[0]);
   };
 
-  console.log("data", data);
+  // console.log("data", data);
 
   useEffect(() => {
     fetchProductDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    
+  }, [params]);
 
   const handleMouseEnterProduct = (imageURL) => {
     setActiveImage(imageURL);
@@ -64,7 +64,7 @@ const ProductDetails = () => {
   const handleZoomImage = (e) =>{
     setZoomImage(true)
     const { left , top, width , height } = e.target.getBoundingClientRect()
-    console.log("coordinate", left, top , width , height)
+    // console.log("coordinate", left, top , width , height)
 
     const x = (e.clientX - left) / width
     const y = (e.clientY - top) / height
@@ -124,7 +124,7 @@ const ProductDetails = () => {
               </div>
             ) : (
               <div className="flex gap-2 lg:flex-col overflow-scroll scrollbar-none h-full">
-                {data?.productImage?.map((imgURL, index) => {
+                {data?.productImage?.map((imgURL) => {
                   return (
                     <div
                       className="h-20 w-20 bg-slate-200 rounded p-1"
