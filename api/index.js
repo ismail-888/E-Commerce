@@ -4,7 +4,7 @@ const cookieParser=require('cookie-parser')
 require("dotenv").config();
 const connectDB = require('./config/db.js')
 const router=require('./routes')
-import path from 'path'
+const path =require('path')
 
 
 // publish
