@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
 import SummaryApi from "../common";
 import displayINRCurrency from "../helper/displayCurrency";
 import CategroyWiseProductDisplay from "../components/CategroyWiseProductDisplay";
+import addToCart from "../helper/addToCart";
+import Context from "../context";
 
 const ProductDetails = () => {
   const [data, setData] = useState({
@@ -28,7 +30,7 @@ const ProductDetails = () => {
   });
 
   const [zoomImage, setZoomImage] = useState(false);
-  // const { fetchUserAddToCart } = useContext(Context)
+  const { fetchUserAddToCart } = useContext(Context)
 
   const navigate = useNavigate();
 
@@ -54,29 +56,40 @@ const ProductDetails = () => {
 
   useEffect(() => {
     fetchProductDetails();
-    
   }, [params]);
 
   const handleMouseEnterProduct = (imageURL) => {
     setActiveImage(imageURL);
   };
 
-  const handleZoomImage = (e) =>{
-    setZoomImage(true)
-    const { left , top, width , height } = e.target.getBoundingClientRect()
+  const handleZoomImage = (e) => {
+    setZoomImage(true);
+    const { left, top, width, height } = e.target.getBoundingClientRect();
     // console.log("coordinate", left, top , width , height)
 
-    const x = (e.clientX - left) / width
-    const y = (e.clientY - top) / height
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
 
     setZoomImageCoordinate({
       x,
-      y
-    })
-  }
+      y,
+    });
+  };
 
-  const handleLeaveImageZoom = ()=>{
-    setZoomImage(false)
+  const handleLeaveImageZoom = () => {
+    setZoomImage(false);
+  };
+
+  const handleAddToCart = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart()
+  };
+
+  const handleBuyProduct = async(e,id)=>{
+    await addToCart(e,id)
+    fetchUserAddToCart()
+    navigate("/cart")
+
   }
 
   return (
@@ -197,10 +210,13 @@ const ProductDetails = () => {
             </div>
 
             <div className="flex items-center gap-3 my-2">
-              <button className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white">
+              <button
+                className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white"
+                onClick={(e)=>handleBuyProduct(e,data?._id)}
+              >
                 Buy
               </button>
-              <button className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-red-600 hover:text-red-600 hover:bg-white">
+              <button className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-red-600 hover:text-red-600 hover:bg-white"  onClick={(e)=>handleAddToCart(e,data?._id)}>
                 Add To Cart
               </button>
             </div>
@@ -213,14 +229,12 @@ const ProductDetails = () => {
         )}
       </div>
 
-
-
-      {
-        data.category && (
-          <CategroyWiseProductDisplay category={data?.category} heading={"Recommended Product"}/>
-        )
-      }
-
+      {data.category && (
+        <CategroyWiseProductDisplay
+          category={data?.category}
+          heading={"Recommended Product"}
+        />
+      )}
     </div>
   );
 };
