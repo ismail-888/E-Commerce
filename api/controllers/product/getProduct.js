@@ -11,7 +11,7 @@ const getProductController= async(req,res)=>{
             error : false,
             data : allProduct
         })
-    } catch (error) {
+    } catch (err) {
         res.status(400).json({
             message : err.message || err,
             error : true,

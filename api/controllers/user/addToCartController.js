@@ -7,6 +7,7 @@ const addToCartController = async (req, res) => {
 
     const isProductAvailable = await addToCartModel.findOne({
       productId: productId,
+      userId: currentUser,
     });
 
     if (isProductAvailable) {
@@ -32,7 +33,7 @@ const addToCartController = async (req, res) => {
       success: true,
       error: false,
     });
-  } catch (error) {
+  } catch (err) {
     res.json({
       message: err?.message || err,
       error: true,
