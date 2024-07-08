@@ -21,6 +21,9 @@ const updateAddToCartProduct = require("../controllers/user/updateAddToCartProdu
 const deleteAddToCartProduct = require("../controllers/user/deleteAddToCartProduct")
 const searchProduct = require("../controllers/product/searchProduct")
 const filterProductController = require("../controllers/product/filterProduct")
+const paymentController = require("../controllers/order/paymentController")
+const webhooks = require("../controllers/order/webhook")
+const orderController = require("../controllers/order/order.controller")
 
 router.post("/signup",userSignUpController)
 router.post("/signin",userSignInController)
@@ -51,5 +54,10 @@ router.get("/view-cart-product",authToken,addToCartViewProduct)
 router.post("/update-cart-product",authToken,updateAddToCartProduct)
 router.post("/delete-cart-product",authToken,deleteAddToCartProduct)
 
+
+// payment and order
+router.post('/checkout',authToken,paymentController)
+router.post('/webhook',webhooks) // /api/webhook grand-supple-bliss-wise
+router.get('/order-list',authToken,orderController) 
 
 module.exports =router 

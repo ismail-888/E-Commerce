@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
 import Logo from "./Logo";
+import Logo1 from "../assest/logo2.svg";
+
 import { GrSearch } from "react-icons/gr";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
@@ -14,16 +16,15 @@ import Context from "../context";
 const Header = () => {
   const user = useSelector((state) => state?.user?.user);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
-  const searchInput=useLocation()
-  const URLSearch=new URLSearchParams(searchInput?.search)
-  const searchQuery=URLSearch.getAll("q")
-  const [search,setSearch]=useState(searchQuery)
+  const navigate = useNavigate();
+  const searchInput = useLocation();
+  const URLSearch = new URLSearchParams(searchInput?.search);
+  const searchQuery = URLSearch.getAll("q");
+  const [search, setSearch] = useState(searchQuery);
 
   // console.log("user header", user);
   const [menuDisplay, setMenuDisplay] = useState(false);
   const context = useContext(Context);
-
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -35,7 +36,7 @@ const Header = () => {
     if (data.success) {
       toast.success(data.message);
       dispatch(setUserDetails(null));
-      navigate("/")
+      navigate("/");
     }
     if (data.error) {
       toast.error(data.message);
@@ -44,23 +45,22 @@ const Header = () => {
 
   // console.log("header add to cart count", context);
 
-  const handleSearch=(e)=>{
-    const {value}=e.target;
-    setSearch(value)
-    if(value){
-        navigate(`/search?q=${value}`)
-    }else{
-      navigate('/search')
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearch(value);
+    if (value) {
+      navigate(`/search?q=${value}`);
+    } else {
+      navigate("/search");
     }
-
-
-  }
+  };
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-40">
       <div className="h-full container mx-auto flex items-center px-4 justify-between">
         <div className="">
           <Link to={"/"}>
-            <Logo w={90} h={50} />
+            {/* <Logo w={90} h={50} /> */}
+            <img src={Logo1} alt="" className="w-[90px] h-[50px]" />
           </Link>
         </div>
 
@@ -108,13 +108,20 @@ const Header = () => {
                       Admin Panel
                     </Link>
                   )}
+                  <Link
+                    to={"/order"}
+                    className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 "
+                    onClick={() => setMenuDisplay((prev) => !prev)}
+                  >
+                    Order
+                  </Link>
                 </nav>
               </div>
             )}
           </div>
 
           {user?._id && (
-            <Link to={'/cart'} className="text-2xl relative">
+            <Link to={"/cart"} className="text-2xl relative">
               <span>
                 <FaShoppingCart />
               </span>

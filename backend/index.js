@@ -3,7 +3,7 @@ const cors = require("cors");
 const cookieParser=require('cookie-parser')
 require("dotenv").config();
 const connectDB = require('./config/db.js')
-const router=require('./routes')
+const router=require('./routes/index.js')
 const path =require('path')
 
 
